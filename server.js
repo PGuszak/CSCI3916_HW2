@@ -107,6 +107,59 @@ router.post('/signin', function (req, res) {
     };
 });
 
+//******************************************************************************************************************************
+//I edited everything for router.route till line
+router.route('/movies')
+    .post(function(req, res)
+    {
+      console.log(req.body);
+      //not done with this line yet
+        res.json({message: "Movie Saved", status: 200, headers: req.headers, query: req.query, env: process.env.SECRET_KEY });
+    })
+    .get(function(req, res)
+        {
+            res.json({ status: 200, message: "Get Movies", headers: req.headers, query: req.query, env: process.env.SECRET_KEY})
+        //put code to what we want
+        })
+    .put(authController.isAuthenticated,function (req,res)  //this the JWT authentication
+        {
+            console.log(req.body);
+            res.json({message: "Movie Updated", status:200, headers: req.headers, query: req.query, env: process.env.SECRET_KEY});
+        })
+    .delete(function(req, res) {//for this I will use the BASIC AUTHENTICATION from below. there is no need to make new authentication again
+        var user = db.findOne(req.body.username);
+
+        if (!user)
+        {
+            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'
+            });
+        }
+        else {
+            // check if password matches
+            if (req.body.password == user.password) {
+                var userToken = {id: user.id, username: user.username};
+                var token = jwt.sign(userToken, process.env.SECRET_KEY);
+                res.json({
+                    message: "Movie Deleted",
+                    status: 200,
+                    headers: req.headers,
+                    query: req.query,
+                    env: process.env.SECRET_KEY
+                });
+            } else {
+                res.status(401).send(
+                    {
+                        success: false,
+                        msg: 'Authentication failed. Wrong password.'
+                    });
+            }
+        }});
+
+router.all('*', function(req, res)  //if there is a response that the server has no way to handle.
+{
+   res.json({error: "Unsupported HTTP Method"})
+});
+
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
 
