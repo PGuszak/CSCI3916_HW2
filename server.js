@@ -131,27 +131,19 @@ router.route('/movies')
 
         if (!user)
         {
-            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'
-            });
+            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
         }
-        else {
+        else
+            {
             // check if password matches
-            if (req.body.password == user.password) {
+            if (req.body.password == user.password)
+            {
                 var userToken = {id: user.id, username: user.username};
                 var token = jwt.sign(userToken, process.env.SECRET_KEY);
-                res.json({
-                    message: "Movie Deleted",
-                    status: 200,
-                    headers: req.headers,
-                    query: req.query,
-                    env: process.env.SECRET_KEY
-                });
-            } else {
-                res.status(401).send(
-                    {
-                        success: false,
-                        msg: 'Authentication failed. Wrong password.'
-                    });
+                res.json({message: "Movie Deleted", status: 200, headers: req.headers, query: req.query, env: process.env.SECRET_KEY});
+            }
+            else {
+                res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
             }
         }});
 
