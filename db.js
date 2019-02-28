@@ -35,7 +35,7 @@ module.exports = function () {
                 });
             }
             else {
-                return this.userList;
+                return false;
             }
         },
         /*

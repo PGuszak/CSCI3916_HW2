@@ -121,7 +121,7 @@ router.route('/movies')
             res.json({ status: 200, message: "Get Movies", headers: req.headers, query: req.query, env: process.env.SECRET_KEY})
         //put code to what we want
         })
-    .put(authController.isAuthenticated,function (req,res)  //this the JWT authentication
+    .put(authJwtController.isAuthenticated,function (req,res)  //this the JWT authentication
         {
             console.log(req.body);
             res.json({message: "Movie Updated", status:200, headers: req.headers, query: req.query, env: process.env.SECRET_KEY});
