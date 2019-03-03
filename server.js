@@ -108,7 +108,7 @@ router.post('/signin', function (req, res) {
 });
 
 //******************************************************************************************************************************
-//I edited everything for router.route till line
+//I edited everything for router.route till line 153
 router.route('/movies')
     .post(function(req, res)
     {
@@ -149,7 +149,7 @@ router.route('/movies')
 
 router.all('*', function(req, res)  //if there is a response that the server has no way to handle.
 {
-   res.json({error: "Unsupported HTTP Method"})
+    res.json({error: "Unsupported HTTP Method"})
 });
 
 app.use('/', router);
